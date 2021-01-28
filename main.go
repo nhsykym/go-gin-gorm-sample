@@ -46,6 +46,24 @@ func main() {
 		ctx.Redirect(302, "/")
 	})
 
+	router.POST("/update", func(ctx *gin.Context) {
+		db := sqlConnect()
+		n := ctx.PostForm("id")
+		id, err := strconv.Atoi(n)
+		if err != nil {
+			panic("id is not a number")
+		}
+		name := ctx.PostForm("name")
+		email := ctx.PostForm("email")
+		var user User
+		db.First(&user, id)
+		db.Model(&user).Updates(User{Name: name, Email: email})
+		fmt.Println("update user " + name + " with email " + email)
+		defer db.Close()
+
+		ctx.Redirect(302, "/")
+	})
+
 	router.POST("/delete/:id", func(ctx *gin.Context) {
 		db := sqlConnect()
 		n := ctx.Param("id")

@@ -20,8 +20,12 @@
     </tr>
     {{ range .users }}
       <tr>
-        <td>{{ .Name }}</td>
-        <td>{{ .Email }}</td>
+        <form method="post" action="/update">
+          <input type="hidden" name="id" value="{{ .ID }}">
+          <td><input type="text" name="name" value="{{ .Name }}"></td>
+          <td><input type="text" name="email" value="{{ .Email }}"></td>
+          <td><input type="submit" value="更新"></td>
+        </form>
         <td>
           <form method="post" action="/delete/{{.ID}}">
             <button type="submit">削除</button>
